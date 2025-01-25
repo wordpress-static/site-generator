@@ -1,6 +1,4 @@
-# WordPress Static Site Generator
-
-## Get Started
+# Get Started
 
 This tool is for you if you:
 
@@ -10,7 +8,7 @@ This tool is for you if you:
 
 All you need to get started is Markdown or HTML files. From this, an entire site will be generated with WordPRess.
 
-### Pages
+## Pages
 
 Simply create `my-page.md` to create `[...].com/my-page/`. If the first line of the file is a heading level 1, it will be used as the title.
 
@@ -28,7 +26,7 @@ top/middle-2/bottom-1.md (or top/middle-2/bottom-1/index.md)
 top/middle-2/bottom-2.md (or top/middle-2/bottom-2/index.md)
 ```
 
-### Posts (and post types)
+## Posts (and post types)
 
 `posts` is a special directory. Markdown files with the pattern `yyyy-mm-dd--my-post.md` will be converted to posts.
 
@@ -54,7 +52,7 @@ top/middle-2/bottom-2.md (or top/middle-2/bottom-2/index.md)
 
 </details>
 
-### Generating the Site
+## Generating the Site
 
 If you have the file on your local filesystem you can run the following [npx](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) command:
 
@@ -70,7 +68,7 @@ open dist/index.html
 
 You could then manually push the dist folder to github and enable GitHub Pages. But that's a lot of manual work!
 
-### GitHub Action
+## GitHub Action
 
 Instead of dealing with two separate folders and git repos, it's possible to automate generatig the output folder and commit it to a separate git branch that can be used for GitHub pages.
 
