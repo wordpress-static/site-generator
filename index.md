@@ -32,22 +32,27 @@ top/middle-2/bottom-2.md (or top/middle-2/bottom-2/index.md)
 
 `posts` is a special directory. Markdown files with the pattern `yyyy-mm-dd--my-post.md` will be converted to posts.
 
-In the future, it will be possible to add posts to the root to be displayed on the front page, and `posts` to be displayed on that sub page.
+<details>
+<summary>Future</summary>
+  
+  In the future, it will be possible to add posts to the root to be displayed on the front page, and `posts` to be displayed on that sub page.
+  
+  Also in the future, it will be possible to add a config file to any folder to configure a custom post type. For example:
+  
+  ```
+  shop/config.json
+  shop/first-item.md
+  shop/second-item.md
+  ```
+  
+  ```json
+  {
+    "type": "product",
+    "label": "Product"
+  }
+  ```
 
-Also in the future, it will be possible to add a config file to any folder to configure a custom post type. For example:
-
-```
-shop/config.json
-shop/first-item.md
-shop/second-item.md
-```
-
-```json
-{
-  "type": "product",
-  "label": "Product"
-}
-```
+</details>
 
 ### Generating the Site
 
@@ -100,6 +105,18 @@ Make sure to enable write permission for actions at Settings > Actions > General
 Also make sure to set up GitHub pages from the `gh-pages` branch at Setting > Pages (set "source" to "Deploy from a branch" and set "branch" to `gh-pages`).
 
 That's it. Your static WordPress site now lives at `https://[username].github.io/[repo]/`! It's possible to configure a custom domain at Setting > Pages.
+
+## HTML and Blocks
+
+Yes! It will soon also allow `.html` files in addition to `.md` files in case you wish to write HTML or WordPress blocks.
+
+## Themes? Plugins?
+
+Yes! Working on it.
+
+## What if I don't like Markdown?
+
+It will be possible at some point to edit content directly in WordPress, which can then be stored as HTML files in the filesystem.
 
 
 
