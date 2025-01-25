@@ -1,0 +1,21 @@
+name: Publish
+on:
+  push:
+    branches:
+      - main
+concurrency:
+    group: ${{ github.workflow }}
+    cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npx wordpress-static
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
