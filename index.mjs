@@ -1,7 +1,5 @@
 import express from 'express';
 import { rootCertificates } from 'tls';
-import * as phpWasmUniversal from '@php-wasm/universal';
-const { RecommendedPHPVersion } = phpWasmUniversal;
 import { loadNodeRuntime } from '@php-wasm/node';
 import { resolveWordPressRelease, bootWordPress } from '@wp-playground/wordpress';
 import {
@@ -40,8 +38,7 @@ const args = {
     wp: '6.7',
 };
 
-let requestHandler;
-
+async function run() {
 console.log(`Setting up WordPress ${args.wp}...`);
 const wpDetails = await resolveWordPressRelease(args.wp);
 console.log(`Downloading ${wpDetails.releaseUrl}`);
@@ -51,10 +48,10 @@ const sqliteZip = await fetch(
     'https://github.com/WordPress/sqlite-database-integration/archive/refs/heads/main.zip'
 );
 console.log('Booting WordPress...');
-requestHandler = await bootWordPress({
+const requestHandler = await bootWordPress({
     siteUrl: `http://127.0.0.1:${args.port}`,
     createPhpRuntime: async () =>
-        await loadNodeRuntime(RecommendedPHPVersion),
+        await loadNodeRuntime(undefined),
     wordPressZip: new File(
         [ await wordPressZip.arrayBuffer() ],
         'wp.zip',
@@ -145,3 +142,6 @@ app.use('/', async (req, res) => {
     }
     res.end(phpResponse.bytes);
 });
+}
+
+run();
