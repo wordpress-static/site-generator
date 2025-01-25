@@ -1,0 +1,14 @@
+{
+  "name": "@wordpress-static/site-generator",
+  "version": "1.0.0",
+  "dependencies": {
+    "@php-wasm/node": "^1.0.22",
+    "@php-wasm/universal": "^1.0.22",
+    "@wordpress/block-library": "^9.16.0",
+    "@wordpress/blocks": "^14.5.0",
+    "@wp-playground/blueprints": "^1.0.22",
+    "@wp-playground/wordpress": "^1.0.22",
+    "express": "^4.21.2",
+    "jsdom": "^26.0.0"
+  }
+}

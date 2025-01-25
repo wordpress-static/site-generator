@@ -1,0 +1,4 @@
+name: 'Wordpress Static Site Generator'
+runs:
+  using: 'node20'
+  main: 'index.mjs'
