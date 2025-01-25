@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { serialize, pasteHandler } from '@wordpress/blocks';
+import { setSiteOptions } from '@wp-playground/blueprints';
 
-const gitignore = fs.readFileSync('.gitignore', 'utf8');
+const gitignore = fs.existsSync('.gitignore') ? fs.readFileSync('.gitignore', 'utf8') : '';
 
 function bytesToBase64(bytes) {
     const binString = String.fromCodePoint(...bytes);
@@ -166,4 +167,13 @@ update_option('page_for_posts', $post_id);
         });
     }
     await processPages( php, '.' );
+    if (fs.existsSync('config.json')) {
+        const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+        await setSiteOptions(php, {
+            options: {
+                "blogname": config.title,
+                "blogdescription": config.description
+            }
+        });
+    }
 }

@@ -1,8 +1,8 @@
 {
   "name": "wordpress-static",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "bin": {
-    "wordpress-static": "./run.sh"
+    "wordpress-static": "./bin.js"
   },
   "dependencies": {
     "@php-wasm/node": "^1.0.22",
