@@ -32,7 +32,30 @@ echo $post_id;
     return decoder.decode(response.bytes);
 }
 
-function mdToPost(md) {
+function convertInternalLinks(md, currentDir) {
+    return md.replace(/(<a\s+[^>]*href=["'])([^"']+)(["'][^>]*>)/g, (match, before, href, after) => {
+        const exists = fs.existsSync(path.join(currentDir, href));
+        console.log(exists, path.join(currentDir, href));
+        if ( exists ) {
+            const dir = path.dirname(href);
+            const base = path.basename(href, path.extname(href));
+            const isPost = /^\d{4}-\d{2}-\d{2}-/.test(base);
+            if ( isPost ) {
+                const [ year, month, day, ...rest ] = base.split('-');
+                const slug = rest.join('-');
+                href = path.join(dir, year, month, day, slug);
+            } else if ( base === 'index' ) {
+                href = dir;
+            } else {
+                href = path.join(dir, base);
+            }
+            href = href.endsWith('/') ? href : href + '/';
+        }
+        return `${before}${href}${after}`;
+    });
+}
+
+function mdToPost(md, currentDir) {
     const original = console.log;
     console.log = () => {};
     let blocks = pasteHandler({ plainText: md, mode: 'BLOCKS' });
@@ -43,9 +66,10 @@ function mdToPost(md) {
         title = firstBlock.attributes.content;
         blocks = rest;
     }
+    const serialized = serialize(blocks);
     return {
         title,
-        content: serialize(blocks)
+        content: convertInternalLinks( serialized, currentDir )
     };
 }
 
@@ -66,7 +90,7 @@ async function processPostType(php, dir, postType) {
         const date = new Date(year, month - 1, day);
         const formattedDate = date.toISOString().split('T')[0];
         const slug = rest.join('-');
-        const { title = slug, content } = mdToPost(md);
+        const { title = slug, content } = mdToPost(md, dir);
         const post = {
             'post_type': postType,
             'post_date': formattedDate,
@@ -85,7 +109,7 @@ async function processPage(php, filePath, parentId) {
     const md = fs.readFileSync( filePath, 'utf8');
     const baseName = path.basename(filePath);
     const [slug] = baseName.split('.');    
-    const { title = slug, content } = mdToPost(md);
+    const { title = slug, content } = mdToPost(md, path.dirname(filePath));
     const post = {
         'post_type': 'page',
         'post_name': slug,
@@ -108,7 +132,7 @@ async function processPages( php, dir, postId) {
             md = fs.readFileSync(index, 'utf8');
         }
         const slug = path.basename(dir);
-        const { title = slug, content } = mdToPost(md);
+        const { title = slug, content } = mdToPost(md, dir );
         const post = {
             'post_type': 'page',
             'post_title': title,
