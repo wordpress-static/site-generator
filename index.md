@@ -6,7 +6,7 @@ This tool is for you if you:
 * Like WordPress, and its theme ecosystem.
 * Are a (version) control freak.
 
-All you need to get started is Markdown or HTML files. From this, an entire site will be generated with WordPRess.
+All you need to get started is Markdown or HTML files. From this, an entire site will be generated with WordPress.
 
 ## Pages
 

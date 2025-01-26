@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import express from 'express';
 import { rootCertificates } from 'tls';
 import { loadNodeRuntime } from '@php-wasm/node';
@@ -123,10 +125,36 @@ app.listen(args.port, () => {
     wget.stdout.on('data', ( data ) => console.log(data.toString()));
     wget.stderr.on('data', ( data ) => console.error(data.toString()));
     wget.on('close', () => {
+        console.log('Making links pretty...');
+        function makePretty(filePath) {
+            const files = fs.readdirSync(filePath);
+            for (const file of files) {
+                const _path = path.join(filePath, file);
+                const stat = fs.statSync(_path);
+                if (stat.isDirectory()) {
+                    makePretty(_path);
+                } else if ( file.endsWith('.html') ) {
+                    const content = fs.readFileSync(_path, 'utf8');
+                    const newContent = content.replace(/(<(?:a|link)\s[^>]*href=["'])([^"']*)index\.html(["'][^>]*>)/g, (match, before, href, after) => {
+                        return `${before}${href || '.'}${after}`;
+                    });
+                    fs.writeFileSync(_path, newContent);
+                }
+            }
+        }
+        makePretty('./dist');
         console.log('Done!');
         process.exit(0);
     });
 });
+
+const mimes = {
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.svg': 'image/svg+xml',
+};
 
 app.use('/', async (req, res) => {
     const phpResponse = await requestHandler.request({
@@ -135,6 +163,17 @@ app.use('/', async (req, res) => {
         method: req.method,
         body: await bufferRequestBody(req),
     });
+
+    if (phpResponse.httpStatusCode === 404) {
+        const relPath = path.join('./', req.url);
+        const mimeType = mimes[path.extname(req.url)];
+        if (mimeType && fs.existsSync(relPath)) {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', mimeType);
+            res.end(fs.readFileSync(relPath));
+            return;
+        }
+    }
 
     res.statusCode = phpResponse.httpStatusCode;
     for (const key in phpResponse.headers) {
