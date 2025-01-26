@@ -52,6 +52,20 @@ top/middle-2/bottom-2.md (or top/middle-2/bottom-2/index.md)
 
 </details>
 
+## Can I add media?
+
+![Of course!](image.png)
+
+Simply add an image or other media anywhere in the filesystem and link to it. It
+will be picked up.
+
+```
+![alt text](image.png)
+```
+
+Did you know that you can paste an image into VSCode and it will automatically
+add the Markdown code and upload it?
+
 ## Generating the Site
 
 If you have the file on your local filesystem you can run the following [npx](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) command:
