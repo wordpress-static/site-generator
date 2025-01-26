@@ -1,6 +1,6 @@
 {
   "name": "wordpress-static",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "bin": {
     "wordpress-static": "./bin.js"
   },

@@ -1,5 +1,7 @@
 # Get Started
 
+<small>[Edit this page](https://github.com/wordpress-static/site-generator/edit/main/index.md)</small>
+
 This tool is for you if you:
 
 * Like the performance and low cost of static sites.
